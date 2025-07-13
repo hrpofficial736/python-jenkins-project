@@ -1,7 +1,7 @@
 pipeline {
   agent any
   parameters {
-    string(name: "Application Name", description: "Enter the name of your application", defaultValue: ""),
+    string(name: "Application Name", description: "Enter the name of your application", defaultValue: "")
     choice(name: "Version", choices: ["0.1.0", "0.1.1", "0.1.2"], description: "Specify the version to deploy")
   }
   stages {
