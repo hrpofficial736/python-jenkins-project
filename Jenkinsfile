@@ -1,9 +1,7 @@
 
 pipeline {
   agent any 
-  tools {
-    python "python3"
-  }
+  
   stages {
     stage ("create env") {
       steps {
