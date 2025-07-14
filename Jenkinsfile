@@ -34,9 +34,17 @@ pipeline {
           params.Version == "0.1.1"
         }
       }
+      input {
+        message "What is the programming language used in this project?"
+        ok "Language selected"
+        parameters {
+          choice(name: "Language", choices: ["Python", "Typescript", "Dart"], description: "")
+        }
+      }
       steps {
         script {
         gv.deploy()
+        echo "Deploying as ${Language} project..."
       }
       }
     }
