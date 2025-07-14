@@ -19,7 +19,7 @@ pipeline {
     stage ("test") {
       steps {
         script {
-          sh "Testing app..."
+          sh "pytest tests/"
         }
       }
     }
