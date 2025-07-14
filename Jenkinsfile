@@ -1,3 +1,5 @@
+def gv
+
 pipeline {
   agent any
   parameters {
@@ -5,14 +7,25 @@ pipeline {
     choice(name: "Version", choices: ["0.1.0", "0.1.1", "0.1.2"], description: "Specify the version to deploy")
   }
   stages {
+    stage ("init") {
+      steps {
+        script {
+          gv = load "script.groovy"
+        }
+      }
+    }
     stage ("build") {
       steps {
-        echo "Building app..."
+        script {
+        gv.build
+      }
       }
     }
     stage ("test") {
       steps {
-        echo "Testing app..."
+        script {
+        gv.test
+      }
       }
     }
     stage ("deploy") {
@@ -22,7 +35,9 @@ pipeline {
         }
       }
       steps {
-        echo "Deploying app as ${params.Version}..."
+        script {
+        gv.deploy
+      }
       }
     }
   }
