@@ -1,65 +1,45 @@
-def gv
 
 pipeline {
-  agent any
-  parameters {
-    string(name: "Application Name", description: "Enter the name of your application", defaultValue: "")
-    choice(name: "Version", choices: ["0.1.0", "0.1.1", "0.1.2"], description: "Specify the version to deploy")
+  agent any 
+  tools {
+    python "python3"
   }
   stages {
-    stage ("init") {
+    stage ("create env") {
       steps {
         script {
-          gv = load "script.groovy"
+          echo "Creating virtual environment"
+          bash "python3 -m venv env"
+          bash "source env/bin/activate"
         }
       }
     }
-    stage ("build") {
-      steps {
-        script {
-        gv.build()
-      }
-      }
-    }
+
+
     stage ("test") {
       steps {
         script {
-        gv.test()
-      }
+          bash "pytest tests/"
+        }
       }
     }
-    stage ("deploy") {
-      when {
-        expression {
-          params.Version == "0.1.1"
-        }
-      }
-      input {
-        message "What is the programming language used in this project?"
-        ok "Language selected"
-        parameters {
-          choice(name: "Language", choices: ["Python", "Typescript", "Dart"], description: "")
-        }
-      }
+
+    stage ("build docker image") {
       steps {
-        script {
-        gv.deploy()
-        echo "Deploying as ${Language} project..."
+        echo "Building docker image..."
+        withCredentials ([usernamePassword(credentialsId: "docker-hub-repo", passwordVariable: "PASSWORD", usernameVariable: "USERNAME")]) {
+          bash "docker build -t harshit736/my-jenkins-repo:fapi-app-1.2 ."
+          bash "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
+          bash "docker push harshit736/my-jenkins-repo:fapi-app-1.2"
+        }
       }
+    }
+
+
+    stage ("deploy") {
+      steps {
+        echo "Deploying app..."
       }
-    }
-  }
-  post {
-    always {
-      echo "Completed process..."
-    }
-    failure {
-      echo "Damn it Harry, process failed!"
-    }
-    success {
-      echo "Well done Harry!"
     }
   }
 }
-
-
