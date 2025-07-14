@@ -7,8 +7,8 @@ pipeline {
       steps {
         script {
           echo "Creating virtual environment"
-          sh "python3 -m venv env"
-          sh "source env/bin/activate"
+          sh '''python3 -m venv env
+          . env/bin/activate'''
         }
       }
     }
