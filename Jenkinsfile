@@ -17,14 +17,14 @@ pipeline {
     stage ("build") {
       steps {
         script {
-        gv.build
+        gv.build()
       }
       }
     }
     stage ("test") {
       steps {
         script {
-        gv.test
+        gv.test()
       }
       }
     }
@@ -36,7 +36,7 @@ pipeline {
       }
       steps {
         script {
-        gv.deploy
+        gv.deploy()
       }
       }
     }
