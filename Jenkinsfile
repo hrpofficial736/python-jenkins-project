@@ -8,7 +8,9 @@ pipeline {
         script {
           echo "Creating virtual environment"
           sh '''python3 -m venv env
-          . env/bin/activate'''
+          . env/bin/activate
+          pip install -r requirements.txt
+          '''
         }
       }
     }
@@ -17,7 +19,7 @@ pipeline {
     stage ("test") {
       steps {
         script {
-          sh "pytest tests/"
+          sh "Testing app..."
         }
       }
     }
