@@ -29,6 +29,7 @@ pipeline {
         echo "Building docker image..."
         withCredentials ([usernamePassword(credentialsId: "docker-hub-creds", passwordVariable: "PASSWORD", usernameVariable: "USERNAME")]) {
           sh "groups"
+          sh "newgrp"
           sh "docker ps"
           sh "docker build -t harshit736/my-jenkins-repo:fapi-app-1.2 ."
           sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
