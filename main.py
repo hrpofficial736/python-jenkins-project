@@ -12,7 +12,3 @@ def home ():
         "message": "On home route!"
     }
 
-
-def test_root () :
-    response = client.get("/")
-    
