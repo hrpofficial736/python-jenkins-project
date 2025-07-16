@@ -4,6 +4,11 @@ pipeline {
   
   stages {
     stage ("create env") {
+      when {
+	expression {
+	 BRANCH_NAME == "main"
+        }
+     }
       steps {
         script {
           echo "Creating virtual environment"
@@ -25,6 +30,11 @@ pipeline {
     }
 
     stage ("build docker image") {
+      when {
+	expression {
+	 BRANCH_NAME == "main"
+	}
+     }
       steps {
         echo "Building docker image..."
         withCredentials ([usernamePassword(credentialsId: "docker-hub-creds", passwordVariable: "PASSWORD", usernameVariable: "USERNAME")]) {
@@ -37,6 +47,11 @@ pipeline {
 
 
     stage ("deploy") {
+      when {
+	expression {
+	 BRANCH_NAME == "main"
+	}
+      }
       steps {
         echo "Deploying app..."
       }
